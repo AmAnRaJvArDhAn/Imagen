@@ -1,5 +1,4 @@
-import React from 'react'
-import Card2 from './card2'
+import Card2 from './Card2'
 
 
 function postbanner3() {
