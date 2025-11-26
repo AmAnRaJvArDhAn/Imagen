@@ -4,16 +4,16 @@ import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import ProfileDropdown from "./ProfileDropdown";
 import { BACKEND_URL } from "../config";
-import logo1 from '../assets/logo1.png'
-// Backend base URL (change env se control hoga)
+import logo1 from "../assets/logo1.png";
+
 const API_BASE_URL = `${BACKEND_URL}`;
 
 function Gnrt() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);  //used if the user is logged in
-  const { user } = useSelector((state) => state.auth);
+  // FIXED: token added here
+  const { user, isAuthenticated, token } = useSelector((state) => state.auth);
 
   const prefilledPrompt = location.state?.prompt || "";
   const [prompt, setPrompt] = useState(prefilledPrompt);
@@ -24,20 +24,10 @@ function Gnrt() {
   const [selected, setSelected] = useState(null);
   const [error, setError] = useState("");
 
-  const styleColors = {
-    Photorealistic: ["#0f172a", "#1f2937"],
-    Illustration: ["#2b6cb0", "#90cdf4"],
-    Ghibli: ["#6b21a8", "#f472b6"],
-    "Oil Painting": ["#111827", "#9ca3af"],
-    Sketch: ["#1f1f1f", "#3f3f3f"],
-    Fantasy: ["#1a202c", "#2d3748"],
-  };
-
   const handleGenerate = async (e) => {
     e?.preventDefault();
     setError("");
 
-    // Protected: only logged-in user
     if (!isAuthenticated) {
       toast.error("You must be logged in to generate images.");
       navigate("/login?compact=true");
@@ -55,11 +45,18 @@ function Gnrt() {
       const basePrompt = prompt.trim();
       const finalPrompt = `${basePrompt}, style: ${style}, size: ${size}`;
 
+      // FIXED: Add Authorization header if token exists
+      const headers = {
+        "Content-Type": "application/json",
+      };
+
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
       const res = await fetch(`${API_BASE_URL}/api/image/generate`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers,
         credentials: "include",
         body: JSON.stringify({
           prompt: finalPrompt,
@@ -67,25 +64,26 @@ function Gnrt() {
       });
 
       const data = await res.json();
-      if (res.ok) {
-        toast.success("Image generated successfully!");
-      }
+
       if (!res.ok) {
         toast.error("Image generation failed. Please try again.");
         console.error("Image generation error:", data);
         setError(
           data?.error ||
-          data?.details?.error?.message ||
-          "Something went wrong"
+            data?.details?.error?.message ||
+            "Something went wrong"
         );
         return;
       }
+
+      toast.success("Image generated successfully!");
 
       if (!data?.imageUrl) {
         console.error("No imageUrl in response:", data);
         toast.error("No image returned from server.");
         return;
       }
+
       const item = {
         id: Date.now(),
         prompt: basePrompt,
@@ -108,21 +106,16 @@ function Gnrt() {
 
   const handleDownload = async (image) => {
     try {
-      // Fetch the image as a blob
       const response = await fetch(image.url);
       const blob = await response.blob();
-
-      // Create a local URL for the blob
       const blobUrl = URL.createObjectURL(blob);
 
-      // Create download link
       const a = document.createElement("a");
       a.href = blobUrl;
       a.download = `imagen-${image.id}.png`;
       document.body.appendChild(a);
       a.click();
 
-      // Cleanup
       a.remove();
       URL.revokeObjectURL(blobUrl);
     } catch (error) {
@@ -132,15 +125,14 @@ function Gnrt() {
   };
 
   const handleCopyPrompt = async (text) => {
-    if (!navigator.clipboard) return;
     try {
       await navigator.clipboard.writeText(text);
       toast.success("Prompt copied to clipboard!");
     } catch (err) {
-      console.error(err);
       console.error("Failed to copy prompt");
     }
   };
+
   const sidebarItems = [
     {
       to: "/",
@@ -150,14 +142,11 @@ function Gnrt() {
           className="w-5 h-5 inline-block mr-2"
           viewBox="0 0 24 24"
           fill="none"
-          xmlns="http://www.w3.org/2000/svg"
         >
           <path
             d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V11.5z"
             stroke="currentColor"
             strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
           />
         </svg>
       ),
@@ -166,17 +155,11 @@ function Gnrt() {
       to: "/prompt",
       label: "Prompt",
       icon: (
-        <svg
-          className="w-5 h-5 inline-block mr-2"
-          viewBox="0 0 24 24"
-          fill="none"
-        >
+        <svg className="w-5 h-5 inline-block mr-2" viewBox="0 0 24 24">
           <path
             d="M12 3v18M3 12h18"
             stroke="currentColor"
             strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
           />
         </svg>
       ),
@@ -191,8 +174,6 @@ function Gnrt() {
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
         >
           <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
           <circle cx="8.5" cy="8.5" r="1.5" />
@@ -204,12 +185,7 @@ function Gnrt() {
       to: "/about",
       label: "About",
       icon: (
-        <svg
-          className="w-5 h-5 inline-block mr-2"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-        >
+        <svg className="w-5 h-5 inline-block mr-2" viewBox="0 0 24 24">
           <circle cx="12" cy="12" r="10" strokeWidth="1.5" />
           <path
             d="M12 16v-4M12 8h.01"
@@ -233,44 +209,25 @@ function Gnrt() {
           />
         </Link>
 
-        {/* RIGHT SIDE: auth (always visible) */}
         <div className="p-2 sm:p-4">
           <div className="flex items-center">
             {isAuthenticated ? (
               <ProfileDropdown user={user} />
             ) : (
-              <>
-                <Link
-                  to="/login"
-                  className="
-              ml-2 sm:ml-4 
-              px-4 sm:px-6 
-              py-2 sm:py-2.5 
-              bg-linear-to-r from-cyan-500 to-purple-600 
-              text-white 
-              rounded-lg 
-              font-semibold 
-              hover:from-cyan-400 
-              hover:to-purple-500 
-              transition-all 
-              duration-300 
-              shadow-lg 
-              hover:shadow-cyan-500/50 
-              text-sm sm:text-base
-            "
-                >
-                  Login
-                </Link>
-              </>
+              <Link
+                to="/login"
+                className="ml-2 sm:ml-4 px-4 sm:px-6 py-2 sm:py-2.5 bg-linear-to-r from-cyan-500 to-purple-600 text-white rounded-lg font-semibold hover:from-cyan-400 hover:to-purple-500 transition-all duration-300 shadow-lg hover:shadow-cyan-500/50 text-sm sm:text-base"
+              >
+                Login
+              </Link>
             )}
           </div>
         </div>
       </div>
 
-
       <div className="border-b border-gray-600"></div>
 
-      {/* LAYOUT: SIDEBAR + MAIN */}
+      {/* LAYOUT */}
       <div className="flex flex-col lg:flex-row">
         {/* Sidebar */}
         <aside className="w-35 bg-linear-to-b from-black to-gray-950 border-r border-gray-600 min-h-screen hidden lg:block">
@@ -280,9 +237,9 @@ function Gnrt() {
                 <Link
                   key={it.to}
                   to={it.to}
-                  className={`flex items-center px-3 py-2 rounded-md text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors`}
+                  className="flex items-center px-3 py-2 rounded-md text-sm text-gray-300 hover:bg-gray-800 hover:text-white"
                 >
-                  <span aria-hidden>{it.icon}</span>
+                  <span>{it.icon}</span>
                   <span>{it.label}</span>
                 </Link>
               ))}
@@ -308,7 +265,7 @@ function Gnrt() {
           </div>
         </aside>
 
-        {/* Main content area */}
+        {/* MAIN */}
         <div className="flex-1 flex justify-center min-h-screen bg-linear-to-b from-black to-gray-950 text-white py-10 sm:py-12 px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto w-full">
             <header className="mb-6">
@@ -318,7 +275,7 @@ function Gnrt() {
             </header>
 
             <div className="grid gap-5 lg:grid-cols-3">
-              {/* Left: controls */}
+              {/* LEFT FORM */}
               <form
                 className="lg:col-span-1 bg-gray-900 p-4 sm:p-6 rounded-lg shadow"
                 onSubmit={handleGenerate}
@@ -330,8 +287,8 @@ function Gnrt() {
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
                   rows={5}
-                  placeholder="A serene landscape with neon lights, cinematic lighting"
-                  className="mt-2 w-full bg-gray-900 text-white rounded-md p-3 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  placeholder="A serene landscape..."
+                  className="mt-2 w-full bg-gray-900 text-white rounded-md p-3 border border-gray-600"
                 />
 
                 <div className="mt-4 grid grid-cols-2 gap-4">
@@ -352,6 +309,7 @@ function Gnrt() {
                       <option>Fantasy</option>
                     </select>
                   </div>
+
                   <div>
                     <label className="block text-sm font-medium text-gray-300">
                       Size
@@ -374,13 +332,15 @@ function Gnrt() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className={`px-4 py-2 rounded-md font-semibold ${loading
-                      ? "bg-gray-600"
-                      : "bg-linear-to-r from-cyan-600 to-purple-600 shadow-cyan-500/50 shadow-lg hover:brightness-125"
-                      }`}
+                    className={`px-4 py-2 rounded-md font-semibold ${
+                      loading
+                        ? "bg-gray-600"
+                        : "bg-linear-to-r from-cyan-600 to-purple-600 shadow-lg hover:brightness-125"
+                    }`}
                   >
                     {loading ? "Generating..." : "Generate"}
                   </button>
+
                   <button
                     type="button"
                     onClick={() => {
@@ -392,47 +352,39 @@ function Gnrt() {
                     Clear
                   </button>
                 </div>
-
-                <div className="mt-6 text-sm text-gray-400">
-                  <p>
-                    Tip: Be descriptive — include style, mood, color, and
-                    composition.
-                  </p>
-                </div>
               </form>
 
-              {/* Center: preview */}
+              {/* PREVIEW */}
               <div className="lg:col-span-2 mt-5 lg:mt-0">
                 <div className="bg-gray-900 p-4 sm:p-6 rounded-lg shadow min-h-[360px] flex flex-col">
-                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
-                    <h2 className="text-lg sm:text-xl font-semibold">Preview</h2>
-                    <div className="text-xs sm:text-sm text-gray-400">
+                  <div className="flex flex-col sm:flex-row justify-between">
+                    <h2 className="text-lg font-semibold">Preview</h2>
+                    <div className="text-xs text-gray-400">
                       {selected ? new Date(selected.createdAt).toLocaleString() : ""}
                     </div>
                   </div>
 
-                  <div className="mt-4 flex-1 flex items-center justify-center border-2 border-dashed border-gray-700 rounded-md overflow-hidden bg-linear-to-b from-gray-900 to-gray-800">
+                  <div className="mt-4 flex-1 flex items-center justify-center border-2 border-dashed border-gray-700 rounded-md overflow-hidden bg-gray-900">
                     {selected ? (
-                      <div className="w-full h-full flex flex-col items-center justify-center gap-4 p-4 sm:p-6">
+                      <div className="w-full flex flex-col items-center p-4">
                         <img
                           src={selected.url}
                           alt={selected.prompt}
-                          className="max-w-full max-h-[320px] sm:max-h-[520px] object-contain rounded"
+                          className="max-w-full max-h-[520px] object-contain rounded"
                         />
-                        <div className="w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                          <div className="text-xs sm:text-sm text-gray-300">
-                            {selected.prompt}
-                          </div>
-                          <div className="flex items-center gap-2">
+
+                        <div className="w-full flex justify-between mt-3">
+                          <div className="text-sm text-gray-300">{selected.prompt}</div>
+                          <div className="flex gap-2">
                             <button
                               onClick={() => handleCopyPrompt(selected.prompt)}
-                              className="px-3 py-1 bg-gray-700 rounded hover:shadow-gray-500/50 hover:shadow-lg text-xs sm:text-sm"
+                              className="px-3 py-1 bg-gray-700 rounded text-sm"
                             >
                               Copy
                             </button>
                             <button
                               onClick={() => handleDownload(selected)}
-                              className="px-3 py-1 bg-linear-to-r from-cyan-600 to-purple-600 rounded hover:shadow-cyan-500/50 hover:shadow-lg text-xs sm:text-sm"
+                              className="px-3 py-1 bg-linear-to-r from-cyan-600 to-purple-600 rounded text-sm"
                             >
                               Download
                             </button>
@@ -440,16 +392,14 @@ function Gnrt() {
                         </div>
                       </div>
                     ) : (
-                      <div className="text-center text-gray-500 text-sm">
-                        No image yet — generate one using the controls on the
-                        left.
-                      </div>
+                      <div className="text-gray-500">No image yet — generate one.</div>
                     )}
                   </div>
 
-                  {/* History */}
+                  {/* HISTORY */}
                   <div className="mt-6">
                     <h3 className="text-sm text-gray-300 mb-3">History</h3>
+
                     {images.length === 0 ? (
                       <div className="text-gray-500 text-sm">
                         No generated images yet.
@@ -460,10 +410,11 @@ function Gnrt() {
                           <button
                             key={img.id}
                             onClick={() => setSelected(img)}
-                            className={`rounded overflow-hidden border ${selected?.id === img.id
-                              ? "ring-2 ring-purple-500"
-                              : "border-gray-700"
-                              }`}
+                            className={`rounded overflow-hidden border ${
+                              selected?.id === img.id
+                                ? "ring-2 ring-purple-500"
+                                : "border-gray-700"
+                            }`}
                           >
                             <img
                               src={img.url}
@@ -477,12 +428,11 @@ function Gnrt() {
                   </div>
                 </div>
               </div>
-              {/* end center */}
+              {/* END CENTER */}
             </div>
           </div>
         </div>
       </div>
-
     </>
   );
 }
