@@ -14,8 +14,10 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
     cors({
-        origin: process.env.FRONTEND_URL || true,
+        origin: process.env.FRONTEND_URL || "https://imagen-dev.netlify.app", // Must be exact URL, not "true"
         credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+        allowedHeaders: ['Content-Type', 'Authorization']
     })
 );
 //-------------------------------------------------------------------

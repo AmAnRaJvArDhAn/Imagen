@@ -1,12 +1,23 @@
 import jwt from "jsonwebtoken";
 
-export const auth = (req, res, next) => {        // our built-in middleware, we'll use this for protected routes
+export const auth = (req, res, next) => {
     try {
-        const token = req.cookies.token;      // get the token from the cookie
-        if (!token) {                          //checks if token is present or not
+        // get token from cookie first, then from Authorization header
+        let token = req.cookies.token;
+        
+        if (!token) {
+            const authHeader = req.headers.authorization;
+            if (authHeader && authHeader.startsWith('Bearer ')) {
+                token = authHeader.substring(7);
+            }
+        }
+        
+        if (!token) {
+            console.log("❌ No auth token found (header or cookie)");
             return res.status(401).json({ message: "Unauthorized" });
         }
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);   //verifying the token
+        
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
         next();
     } catch (error) {

@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import ProfileDropdown from "./ProfileDropdown";
 import { BACKEND_URL } from "../config";
 import logo1 from "../assets/logo1.png";
+import { apiClient } from "../Utils/api";
 
 const API_BASE_URL = `${BACKEND_URL}`;
 
@@ -46,12 +47,8 @@ function Gnrt() {
       const basePrompt = prompt.trim();
       const finalPrompt = `${basePrompt}, style: ${style}, size: ${size}`;
 
-      const res = await fetch(`${API_BASE_URL}/api/image/generate`, {
+      const res = await apiClient("/api/image/generate", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
         body: JSON.stringify({
           prompt: finalPrompt,
         }),
@@ -325,11 +322,10 @@ function Gnrt() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className={`px-4 py-2 rounded-md font-semibold ${
-                      loading
+                    className={`px-4 py-2 rounded-md font-semibold ${loading
                         ? "bg-gray-600"
                         : "bg-linear-to-r from-cyan-600 to-purple-600 shadow-lg hover:brightness-125"
-                    }`}
+                      }`}
                   >
                     {loading ? "Generating..." : "Generate"}
                   </button>
@@ -403,11 +399,10 @@ function Gnrt() {
                           <button
                             key={img.id}
                             onClick={() => setSelected(img)}
-                            className={`rounded overflow-hidden border ${
-                              selected?.id === img.id
+                            className={`rounded overflow-hidden border ${selected?.id === img.id
                                 ? "ring-2 ring-purple-500"
                                 : "border-gray-700"
-                            }`}
+                              }`}
                           >
                             <img
                               src={img.url}
