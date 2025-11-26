@@ -46,7 +46,7 @@ router.post("/signup", async (req, res) => {
 //--------------------------login route------------------------------------
 router.post("/login", async (req, res) => {
     try {
-          const { email, password } = loginSchema.parse(req.body);
+        const { email, password } = loginSchema.parse(req.body);
         const user = await User.findOne({ email });    //Find user from the database
         if (!user) {
             return res.status(401).json({ message: "Invalid credentials" });
@@ -58,18 +58,27 @@ router.post("/login", async (req, res) => {
         //creating JWT
         const token = jwt.sign(
             { userId: user._id },     //payload
-             process.env.JWT_SECRET,   //signature/secret
-              { expiresIn: "7d" }      //options
+            process.env.JWT_SECRET,   //signature/secret
+            { expiresIn: "7d" }      //options
         );
         res.cookie("token", token, {
-             httpOnly: true,
-             secure : true,
-             sameSite : "none",
-             maxAge: 7 * 24 * 60 * 60 * 1000    //cookie expires in 7 days
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            maxAge: 7 * 24 * 60 * 60 * 1000    //cookie expires in 7 days
         });
-        res.status(200).json({ 
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production", // true in production
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            path: "/"
+        });
+
+        res.status(200).json({
             message: "Login successful",
-            user :{
+            token: token, // Send token so frontend can store it
+            user: {
                 fullName: user.fullName,
                 email: user.email
             }
@@ -99,10 +108,11 @@ router.get("/profile", auth, async (req, res) => {
 
 //--------------------------logout route------------------------------------
 router.post("/logout", (req, res) => {
-    res.clearCookie("token",{
+    res.clearCookie("token", {
         httpOnly: true,
-        secure : true,
-        sameSite : "none"
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        path: "/"
     });
     res.status(200).json({ message: "Logout successful" });
 })
