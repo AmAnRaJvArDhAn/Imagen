@@ -10,6 +10,14 @@ import p15 from '../assets/p15.jpeg'
 import p16 from '../assets/p16.jpeg'
 import p17 from '../assets/p17.jpeg'
 import p18 from '../assets/p18.jpeg'
+import p19 from '../assets/p19.jpeg'
+import p20 from '../assets/p20.jpeg'
+import p21 from '../assets/p21.jpeg'
+import p22 from '../assets/p22.jpeg'
+import p23 from '../assets/p23.jpeg'
+import p24 from '../assets/p24.jpeg'
+import p25 from '../assets/p25.jpeg'
+import p26 from '../assets/p26.jpeg'
 
 function postbanner5() {
     return (
@@ -56,7 +64,7 @@ function postbanner5() {
                     <LongCard image={p19} />
                 </div>
                 <div>
-                    <LongCard image={p21} />
+                    <LongCard image={p20} />
                 </div>
                 <div>
                     <LongCard image={p21} />
