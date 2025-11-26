@@ -1,6 +1,7 @@
 import Card2 from './Card2.jsx'
 import p5 from '../assets/p5.jpeg'
 import p6 from '../assets/p6.jpeg'
+import p8 from '../assets/p8.jpeg'
 
 function postbanner2() {
     return (
@@ -18,7 +19,7 @@ function postbanner2() {
                     <div className="shadow-2xl shadow-blue-500/30 drop-shadow-[0_0_150px_rgba(0,0,255,0.3)] rounded-3xl">
                         <div className="relative w-full h-44 sm:h-56 md:h-64 rounded-3xl overflow-hidden">
                             <img
-                                src={"p8"}
+                                src={p8}
                                 alt="card"
                                 className="w-full h-full object-cover rounded-3xl brightness-90"
                             />
