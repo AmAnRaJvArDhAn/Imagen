@@ -1,0 +1,43 @@
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Build output
+dist/
+build/
+
+# Cache
+.cache/
+.eslintcache
+.vscode/
+*.pid
+
+# Coverage
+coverage/
+
+# Temporary files
+*.tmp
+tmp/
+temp/
+
+# Prisma (if ever used)
+prisma/*.db
+
+# Local MongoDB data
+mongodb-data/
