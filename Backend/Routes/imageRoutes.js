@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import fetch from "node-fetch";
-import Image from "../models/image.model.js";
+import Image from "../Models/image.model.js";
 import { auth } from "../Middlewares/auth.js";
 import { v2 as cloudinary } from 'cloudinary';
 
