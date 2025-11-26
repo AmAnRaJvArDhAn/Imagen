@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { NavLink } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import ProfileDropdown from './ProfileDropdown'
-
+import logo1 from '../assets/logo1.png'
 function Nav() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)

@@ -227,7 +227,7 @@ function Gnrt() {
       <div className="flex items-center justify-between px-4 sm:px-6 py-4 sm:py-6">
         <Link to="/" className="flex items-center gap-2">
           <img
-            src="{logo1}logo1.png"
+            src={logo1}
             alt="Logo"
             className="w-28 h-10 sm:w-32 sm:h-12 ml-2 sm:ml-8 object-contain"
           />
