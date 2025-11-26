@@ -12,8 +12,8 @@ function Gnrt() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // FIXED: token added here
-  const { user, isAuthenticated, token } = useSelector((state) => state.auth);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);  //used if the user is logged in
+  const { user } = useSelector((state) => state.auth);
 
   const prefilledPrompt = location.state?.prompt || "";
   const [prompt, setPrompt] = useState(prefilledPrompt);
@@ -28,6 +28,7 @@ function Gnrt() {
     e?.preventDefault();
     setError("");
 
+    // Protected: only logged-in user
     if (!isAuthenticated) {
       toast.error("You must be logged in to generate images.");
       navigate("/login?compact=true");
@@ -45,18 +46,11 @@ function Gnrt() {
       const basePrompt = prompt.trim();
       const finalPrompt = `${basePrompt}, style: ${style}, size: ${size}`;
 
-      // FIXED: Add Authorization header if token exists
-      const headers = {
-        "Content-Type": "application/json",
-      };
-
-      if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
-      }
-
       const res = await fetch(`${API_BASE_URL}/api/image/generate`, {
         method: "POST",
-        headers,
+        headers: {
+          "Content-Type": "application/json",
+        },
         credentials: "include",
         body: JSON.stringify({
           prompt: finalPrompt,
@@ -64,26 +58,25 @@ function Gnrt() {
       });
 
       const data = await res.json();
-
+      if (res.ok) {
+        toast.success("Image generated successfully!");
+      }
       if (!res.ok) {
         toast.error("Image generation failed. Please try again.");
         console.error("Image generation error:", data);
         setError(
           data?.error ||
-            data?.details?.error?.message ||
-            "Something went wrong"
+          data?.details?.error?.message ||
+          "Something went wrong"
         );
         return;
       }
-
-      toast.success("Image generated successfully!");
 
       if (!data?.imageUrl) {
         console.error("No imageUrl in response:", data);
         toast.error("No image returned from server.");
         return;
       }
-
       const item = {
         id: Date.now(),
         prompt: basePrompt,

@@ -13,12 +13,10 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(
-  cors({
-    origin: "https://imagen-dev.netlify.app",
-    credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"],
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-  })
+    cors({
+        origin: process.env.FRONTEND_URL || true,
+        credentials: true,
+    })
 );
 //-------------------------------------------------------------------
 

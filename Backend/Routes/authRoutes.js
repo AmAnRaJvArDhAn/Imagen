@@ -99,12 +99,11 @@ router.get("/profile", auth, async (req, res) => {
 
 //--------------------------logout route------------------------------------
 router.post("/logout", (req, res) => {
-    res.clearCookie("token", {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none"
-});
-
+    res.clearCookie("token",{
+        httpOnly: true,
+        secure : true,
+        sameSite : "none"
+    });
     res.status(200).json({ message: "Logout successful" });
 })
 //-------------------------------------------------------------------------
