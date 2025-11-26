@@ -1,4 +1,4 @@
-import Card2 from './card2.jsx'
+import Card2 from './Card2.jsx'
 
 function postbanner2() {
     return (
