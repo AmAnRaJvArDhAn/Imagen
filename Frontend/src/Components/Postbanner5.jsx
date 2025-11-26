@@ -1,6 +1,15 @@
 import React from 'react'
 import LongCard from './LongCard'
-
+import p9 from '../assets/p9.jpeg'
+import p10 from '../assets/p10.jpeg'
+import p11 from '../assets/p11.jpeg'
+import p12 from '../assets/p12.jpeg'
+import p13 from '../assets/p13.jpeg'
+import p14 from '../assets/p14.jpeg'
+import p15 from '../assets/p15.jpeg'
+import p16 from '../assets/p16.jpeg'
+import p17 from '../assets/p17.jpeg'
+import p18 from '../assets/p18.jpeg'
 
 function postbanner5() {
     return (
@@ -10,62 +19,62 @@ function postbanner5() {
             </div>
             <div className="flex flex-row gap-6 overflow-clip overflow-x-auto animate-scroll mt-12 ml-auto mr-0" style={{scrollbarWidth: "none"}}>
                 <div>
-                    <LongCard image="/src/assets/p9.jpeg" />
+                    <LongCard image={p9} />
                 </div>
                 <div>
-                    <LongCard image="/src/assets/p10.jpeg" />
+                    <LongCard image={p10} />
                 </div>
                 <div >
-                    <LongCard image="/src/assets/p11.jpeg" />
+                    <LongCard image={p11} />
                 </div>
                 
                 <div >
-                    <LongCard image="/src/assets/p18.jpeg" />
+                    <LongCard image={p12} />
                 </div>
                 <div >
-                    <LongCard image="/src/assets/p12.jpeg" />
+                    <LongCard image={p13} />
                 </div>
                 <div>
-                    <LongCard image="/src/assets/p13.jpeg" />
+                    <LongCard image={p14} />
                 </div>
                 <div>
-                    <LongCard image="/src/assets/p15.jpeg" />
+                    <LongCard image={p15} />
                 </div>
                 <div>
-                    <LongCard image="/src/assets/p6.jpeg" />
+                    <LongCard image={p16} />
                 </div>
                 <div>
-                    <LongCard image="/src/assets/p14.jpeg" />
+                    <LongCard image={p17} />
                 </div>
                 <div>
-                    <LongCard image="/src/assets/p16.jpeg" />
+                    <LongCard image={p18} />
                 </div>
                 <div>
-                    <LongCard image="/src/assets/p17.jpeg" />
+                    <LongCard image={p17} />
                 </div>
                 <div>
-                    <LongCard image="/src/assets/p19.jpeg" />
+                    <LongCard image={p19} />
                 </div>
                 <div>
-                    <LongCard image="/src/assets/p20.jpeg" />
+                    <LongCard image={p21} />
                 </div>
                 <div>
-                    <LongCard image="/src/assets/p21.jpeg" />
+                    <LongCard image={p21} />
                 </div>
                 <div>
-                    <LongCard image="/src/assets/p22.jpeg" />
+                    <LongCard image={p22} />
                 </div>
                 <div>
-                    <LongCard image="/src/assets/p23.jpeg" />
+                    <LongCard image={p23} />
                 </div>
                 <div>
-                    <LongCard image="/src/assets/p24.jpeg" />
+                    <LongCard image={p24} />
                 </div>
                 <div>
-                    <LongCard image="/src/assets/p25.jpeg" />
+                    <LongCard image={p25} />
                 </div>
                 <div>
-                    <LongCard image="/src/assets/p26.jpeg" />
+                    <LongCard image={p26} />
                 </div>
             </div>
         </div>

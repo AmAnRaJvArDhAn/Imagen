@@ -51,7 +51,7 @@ function Nav() {
         <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 py-4 sm:py-6 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3">
             <img
-              src="/src/assets/logo1.png"
+              src={logo1}
               alt="Logo"
               className="w-28 h-10 sm:w-32 sm:h-12 ml-1 sm:ml-4 object-contain"
             />

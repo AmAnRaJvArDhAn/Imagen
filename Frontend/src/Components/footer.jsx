@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom'
-
+import logo1 from '../assets/logo1.png'
 function Footer() {
   return (
     <footer className="bg-linear-to-t from-black-900 to-gray-950 text-gray-200">
       <div className="max-w-screen-2xl mx-auto px-4 py-5 grid grid-cols-1 md:grid-cols-3 gap-8">
         <div>
           <Link to="/" className="flex items-center gap-3">
-            <img src="/src/assets/logo1.png" alt="Logo" className="w-35 h-10 object-contain" />
+            <img src={logo1} alt="Logo" className="w-35 h-10 object-contain" />
           </Link>
           <p className="mt-4 text-sm text-gray-400 max-w-xs">Create stunning images with AI-powered generation. Fast, simple, and fun.</p>
         </div>

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { NavLink } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import ProfileDropdown from './ProfileDropdown'
+import logo1 from '../assets/logo1.png'
 
 function Navbar() {
   const [open, setOpen] = useState(false)
@@ -48,7 +49,7 @@ function Navbar() {
         <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 py-4 sm:py-6 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3">
             <img
-              src="/src/assets/logo1.png"
+              src={logo1}
               alt="Logo"
               className="w-28 h-10 sm:w-32 sm:h-12 ml-2 sm:ml-4 object-contain"
             />

@@ -1,7 +1,9 @@
 import React from 'react';
 import Card from './Card';
 import { Link } from 'react-router-dom';
-
+import p1 from '../assets/p1.jpeg';
+import p2 from '../assets/p2.jpeg';
+import p3 from '../assets/p3.jpeg';
 function Postbanner() {
   return (
     <div className="bg-black text-white py-16 px-4 sm:px-6 lg:px-12">
@@ -52,18 +54,18 @@ function Postbanner() {
           {/* Top row */}
           <div className="flex justify-center gap-4 sm:gap-5">
             <div className="shadow-2xl shadow-cyan-500/50 drop-shadow-[0_0_150px_rgba(6,182,212,0.3)] rounded-full max-w-[160px] sm:max-w-[180px]">
-              <Card image="/src/assets/p1.jpeg" />
+              <Card image={p1} />
             </div>
             <div className="shadow-2xl shadow-purple-500/50 drop-shadow-[0_0_150px_rgba(168,85,247,0.3)] rounded-full max-w-[160px] sm:max-w-[180px]">
-              <Card image="/src/assets/p2.jpeg" />
+              <Card image={p2} />
             </div>
           </div>
           <div className="flex justify-center gap-4 sm:gap-5 md:ml-8">
             <div className="shadow-2xl shadow-cyan-500/50 drop-shadow-[0_0_150px_rgba(6,182,212,0.3)] rounded-full max-w-[160px] sm:max-w-[180px]">
-              <Card image="/src/assets/p3.jpeg" />
+              <Card image={p3} />
             </div>
             <div className="shadow-2xl shadow-purple-500/50 drop-shadow-[0_0_150px_rgba(168,85,247,0.3)] rounded-full max-w-[160px] sm:max-w-[180px]">
-              <Card image="/src/assets/p4.png" />
+              <Card image={p1} />
             </div>
           </div>
         </div>

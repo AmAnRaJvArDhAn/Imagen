@@ -1,6 +1,21 @@
 import React from 'react'
 import Gcard from './Gcard'
-
+import p1 from "../assets/p1.jpeg";
+import p2 from "../assets/p2.jpeg";
+import p3 from "../assets/p3.jpeg";
+import p4 from "../assets/p4.png";
+import p5 from "../assets/p5.jpeg";
+import p6 from "../assets/p6.jpeg";
+import p7 from "../assets/p7.jpeg";
+import p8 from "../assets/p8.jpeg";
+import p9 from "../assets/p9.jpeg";
+import p10 from "../assets/p10.jpeg";
+import p11 from "../assets/p11.jpeg";
+import p12 from "../assets/p12.jpeg";
+import p13 from "../assets/p13.jpeg";
+import p14 from "../assets/p14.jpeg";
+import p15 from "../assets/p15.jpeg";
+import p16 from "../assets/p16.jpeg";
 function postbanner4() {
     return (
         <div className="bg-black text-white py-16 px-4 sm:px-6 lg:px-12">
@@ -36,22 +51,22 @@ function postbanner4() {
         "
                     >
                         {[
-                            "/src/assets/p9.jpeg",
-                            "/src/assets/p8.jpeg",
-                            "/src/assets/p1.jpeg",
-                            "/src/assets/p2.jpeg",
-                            "/src/assets/p3.jpeg",
-                            "/src/assets/p4.png",
-                            "/src/assets/p5.jpeg",
-                            "/src/assets/p6.jpeg",
-                            "/src/assets/p7.jpeg",
-                            "/src/assets/p10.jpeg",
-                            "/src/assets/p11.jpeg",
-                            "/src/assets/p12.jpeg",
-                            "/src/assets/p13.jpeg",
-                            "/src/assets/p14.jpeg",
-                            "/src/assets/p15.jpeg",
-                            "/src/assets/p16.jpeg",
+                            p9,
+                            p8,
+                            p1,
+                            p2,
+                            p3,
+                            p4,
+                            p5,
+                            p6,
+                            p7,
+                            p10,
+                            p11,
+                            p12,
+                            p13,
+                            p14,
+                            p15,
+                            p16
                         ].map((src, idx) => (
                             <div
                                 key={idx}

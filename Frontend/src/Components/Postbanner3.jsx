@@ -1,5 +1,7 @@
 import Card2 from './Card2'
-
+import p9 from '../assets/p9.jpeg'
+import p10 from '../assets/p10.jpeg'
+import p11 from '../assets/p11.jpeg'
 
 function postbanner3() {
     return (
@@ -24,17 +26,17 @@ function postbanner3() {
                     <div className="flex flex-col sm:flex-row items-center sm:items-end gap-3 sm:gap-5 md:gap-6 mt-6 lg:mt-0">
                         <div className="w-40 sm:w-32 md:w-36 lg:w-40 translate-y-1 sm:translate-y-4 opacity-90">
                             <div className="overflow-hidden rounded-3xl">
-                                <Card2 image="/src/assets/p9.jpeg" />
+                                <Card2 image={p9} />
                             </div>
                         </div>
                         <div className="w-48 sm:w-40 md:w-44 lg:w-52 z-10 scale-105 shadow-2xl shadow-amber-600/60 drop-shadow-[0_0_150px_rgba(168,85,247,0.7)] rounded-3xl">
                             <div className="overflow-hidden rounded-3xl">
-                                <Card2 image="/src/assets/p10.jpeg" />
+                                <Card2 image={p10} />
                             </div>
                         </div>
                         <div className="w-40 sm:w-32 md:w-36 lg:w-40 -translate-y-1 sm:-translate-y-4 opacity-90 -ml-3 sm:-ml-5">
                             <div className="overflow-hidden rounded-3xl">
-                                <Card2 image="/src/assets/p11.jpeg" />
+                                <Card2 image={p11} />
                             </div>
                         </div>
 
