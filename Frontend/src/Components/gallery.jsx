@@ -162,8 +162,7 @@ function Galleries() {
                                     className="w-full h-80 object-cover"
                                 />
 
-                                {/* ✅ EDITED: Mobile pe visible, Desktop pe hover */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity pointer-events-none">
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity pointer-events-none">
                                     <div className="absolute bottom-0 left-0 right-0 p-4 pointer-events-auto">
                                         <div className="flex items-center justify-between">
                                             <span className="text-sm text-gray-300 flex items-center gap-2">
