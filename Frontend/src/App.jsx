@@ -11,44 +11,53 @@ import Gallery from './Gallery/Gallery.jsx'
 import { BACKEND_URL } from './config.js'
 import { Toaster } from 'react-hot-toast';
 
-import axios from "axios";                            
-import { useDispatch } from "react-redux";             
-import { setUser, clearUser } from "./redux/authSlice" 
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setUser, clearUser } from "./redux/authSlice"
 
 function App() {
 
-  const dispatch = useDispatch();                      
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    const headers = {};
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
     axios.get(`${BACKEND_URL}/api/auth/profile`, {
       withCredentials: true,
+      headers: headers
     })
-    .then(res => {
-      if (res.data?.user) {
-        dispatch(setUser(res.data.user));             
-      } else {
+      .then(res => {
+        if (res.data?.user) {
+          dispatch(setUser(res.data.user));
+        } else {
+          dispatch(clearUser());
+          localStorage.removeItem("token");
+        }
+      })
+      .catch(() => {
         dispatch(clearUser());
-      }
-    })
-    .catch(() => {
-      dispatch(clearUser());
-    });
+        localStorage.removeItem("token");
+      });
   }, []);
 
   return (
     <>
-     <div className='bg-black min-h-screen '>
-          <Routes>
-            <Route path='/' element={<Home/>} />
-            <Route path='/about' element={<AboutUs/>} />
-            <Route path='/contacts' element={<Contact/>} />
-            <Route path='/login' element={<Login/>} />
-            <Route path='/signup' element={<Signup/>} />
-            <Route path='/generate' element={<Generate/>} />
-            <Route path='/prompt' element={<Prompt/>} />
-            <Route path='/gallery' element={<Gallery/>} />
-          </Routes>
-          <Toaster/>
+      <div className='bg-black min-h-screen '>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/about' element={<AboutUs />} />
+          <Route path='/contacts' element={<Contact />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/signup' element={<Signup />} />
+          <Route path='/generate' element={<Generate />} />
+          <Route path='/prompt' element={<Prompt />} />
+          <Route path='/gallery' element={<Gallery />} />
+        </Routes>
+        <Toaster />
       </div>
     </>
   )

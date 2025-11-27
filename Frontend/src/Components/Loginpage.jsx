@@ -28,19 +28,22 @@ function Login() {
     setLoading(true)
 
     try {
-      const response = await axios.post(`${BACKEND_URL}/api/auth/login`, {       //we'll change this url in production
+      const response = await axios.post(`${BACKEND_URL}/api/auth/login`, {       //changed this url in production
         email: formData.email,
         password: formData.password
       }, {
         withCredentials: true  // Important! Allows cookies to be saved
       })
+      if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
+      }
 
       console.log('Login successful:', response.data)
       toast.success('Login successful!')
       dispatch(setUser(response.data.user))
       // Redirect to our desired route, im using generate route
-      navigate('/generate')  
-      
+      navigate('/generate')
+
     } catch (err) {
       console.error('Login error:', err)
       if (err.response) {

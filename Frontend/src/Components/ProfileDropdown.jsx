@@ -21,13 +21,21 @@ export default function ProfileDropdown({ user }) {
 
   const handleLogout = async () => {
     try {
+      const token = localStorage.getItem("token");
       await axios.post(
         `${BACKEND_URL}/api/auth/logout`,
         {},
-        { withCredentials: true }
+        {
+          withCredentials: true,
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
       );
+      localStorage.removeItem("token");
     } catch (err) {
       console.error("Logout error:", err);
+      localStorage.removeItem("token");
     } finally {
       dispatch(clearUser());
       setOpen(false);
@@ -74,7 +82,7 @@ export default function ProfileDropdown({ user }) {
               <span>🏠</span>
               <span>Home</span>
             </button>
-            <button className="w-full flex items-center gap-2 px-2 py-2 rounded-md hover:bg-slate-800/80 text-left"onClick={() => navigate("/generate")}>
+            <button className="w-full flex items-center gap-2 px-2 py-2 rounded-md hover:bg-slate-800/80 text-left" onClick={() => navigate("/generate")}>
               <span>🎨</span>
               <span>Generate</span>
             </button>
