@@ -1,15 +1,16 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Heart, Trash2, Clock, Star } from 'lucide-react'; //lucide-react is a package for icons
 import toast from 'react-hot-toast';
 import { BACKEND_URL } from '../config';
+import { apiClient } from '../Utils/api';
 
 function Galleries() {
     const [images, setImages] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('all');
     const [selectedImage, setSelectedImage] = useState(null);
-   
-    
+
+
 
     useEffect(() => {
         fetchImages();
@@ -18,24 +19,25 @@ function Galleries() {
     const fetchImages = async () => {
         try {
             setLoading(true);
-            
-            let endpoint = `${BACKEND_URL}/api/image/gallery`;
-            if (filter === 'favorites') endpoint = `${BACKEND_URL}/api/image/gallery/favorites`;
-            if (filter === 'recent') endpoint = `${BACKEND_URL}/api/image/gallery/recent`;
-            
-            const response = await fetch(endpoint, {
-                method: 'GET',
-                credentials: 'include'
+
+
+            let endpoint = '/api/image/gallery';
+            if (filter === 'favorites') endpoint = '/api/image/gallery/favorites';
+            if (filter === 'recent') endpoint = '/api/image/gallery/recent';
+
+            const response = await apiClient(endpoint, {
+                method: 'GET'
             });
-            
+
+
             const data = await response.json();
-            
+
             if (data.success) {
                 setImages(data.images);
             } else {
                 console.error('Failed to fetch images');
             }
-            
+
         } catch (error) {
             console.error('Error fetching gallery:', error);
             toast.error('Failed to fetch gallery.');
@@ -47,11 +49,10 @@ function Galleries() {
     const toggleFavorite = async (imageId, e) => {
         e.stopPropagation();
         try {
-            const response = await fetch(`${BACKEND_URL}/api/image/gallery/${imageId}/favorite`, {
-                method: 'PATCH',
-                credentials: 'include'
+            const response = await apiClient(`/api/image/gallery/${imageId}/favorite`, {
+                method: 'PATCH'
             });
-            
+
             if (response.ok) {
                 fetchImages();
             }
@@ -63,18 +64,18 @@ function Galleries() {
     const deleteImage = async (imageId, e) => {
         e.stopPropagation();
         if (!confirm('Are you sure you want to delete this image?')) return;
-        
+
         try {
-            const response = await fetch(`${BACKEND_URL}//api/image/gallery/${imageId}`, {
+            const response = await apiClient(`/api/image/gallery/${imageId}`, {
                 method: 'DELETE',
-                credentials: 'include'
             });
-            
+
             if (response.ok) {
                 setImages(prev => prev.filter(img => img._id !== imageId));
                 if (selectedImage?._id === imageId) {
                     setSelectedImage(null);
                 }
+                toast.success('Image deleted successfully.');
             }
         } catch (error) {
             toast.error('Failed to delete image.');
@@ -87,7 +88,7 @@ function Galleries() {
         const now = new Date();
         const diffTime = Math.abs(now - date);
         const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-        
+
         if (diffDays === 0) return 'Today';
         if (diffDays === 1) return 'Yesterday';
         if (diffDays < 7) return `${diffDays} days ago`;
@@ -109,32 +110,29 @@ function Galleries() {
                 <div className="flex justify-center gap-4 mb-8">
                     <button
                         onClick={() => setFilter('all')}
-                        className={`px-6 py-2 rounded-lg font-medium transition-all ${
-                            filter === 'all'
-                                ? 'bg-linear-to-r from-cyan-500 to-purple-500 text-white'
-                                : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
-                        }`}
+                        className={`px-6 py-2 rounded-lg font-medium transition-all ${filter === 'all'
+                            ? 'bg-linear-to-r from-cyan-500 to-purple-500 text-white'
+                            : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+                            }`}
                     >
                         All Images
                     </button>
                     <button
                         onClick={() => setFilter('favorites')}
-                        className={`px-6 py-2 rounded-lg font-medium transition-all flex items-center gap-2 ${
-                            filter === 'favorites'
-                                ? 'bg-linear-to-r from-pink-500 to-red-500 text-white'
-                                : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
-                        }`}
+                        className={`px-6 py-2 rounded-lg font-medium transition-all flex items-center gap-2 ${filter === 'favorites'
+                            ? 'bg-linear-to-r from-pink-500 to-red-500 text-white'
+                            : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+                            }`}
                     >
                         <Star size={18} />
                         Favorites
                     </button>
                     <button
                         onClick={() => setFilter('recent')}
-                        className={`px-6 py-2 rounded-lg font-medium transition-all flex items-center gap-2 ${
-                            filter === 'recent'
-                                ? 'bg-linear-to-r from-purple-500 to-indigo-500 text-white'
-                                : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
-                        }`}
+                        className={`px-6 py-2 rounded-lg font-medium transition-all flex items-center gap-2 ${filter === 'recent'
+                            ? 'bg-linear-to-r from-purple-500 to-indigo-500 text-white'
+                            : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+                            }`}
                     >
                         <Clock size={18} />
                         Recent
@@ -163,9 +161,10 @@ function Galleries() {
                                     alt="Generated"
                                     className="w-full h-80 object-cover"
                                 />
-                                
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <div className="absolute bottom-0 left-0 right-0 p-4">
+
+                                {/* ✅ EDITED: Mobile pe visible, Desktop pe hover */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity pointer-events-none">
+                                    <div className="absolute bottom-0 left-0 right-0 p-4 pointer-events-auto">
                                         <div className="flex items-center justify-between">
                                             <span className="text-sm text-gray-300 flex items-center gap-2">
                                                 <Clock size={14} />
@@ -174,17 +173,16 @@ function Galleries() {
                                             <div className="flex gap-2">
                                                 <button
                                                     onClick={(e) => toggleFavorite(image._id, e)}
-                                                    className={`p-2 rounded-lg transition-all ${
-                                                        image.isFavorite
-                                                            ? 'bg-pink-500 text-white'
-                                                            : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
-                                                    }`}
+                                                    className={`p-2 rounded-lg transition-all ${image.isFavorite
+                                                        ? 'bg-pink-500 text-white'
+                                                        : 'bg-gray-800/90 text-gray-400 hover:bg-gray-700'
+                                                        }`}
                                                 >
                                                     <Heart size={18} fill={image.isFavorite ? 'currentColor' : 'none'} />
                                                 </button>
                                                 <button
                                                     onClick={(e) => deleteImage(image._id, e)}
-                                                    className="p-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all"
+                                                    className="p-2 bg-red-600/90 text-white rounded-lg hover:bg-red-700 transition-all"
                                                 >
                                                     <Trash2 size={18} />
                                                 </button>
