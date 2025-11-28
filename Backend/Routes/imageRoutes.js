@@ -21,8 +21,6 @@ const FLUX_MODELS = [
   "provider-4/sdxl-lite",//6
   "provider-4/qwen-image",//7
   "provider-4/phoenix",//8
-  "provider-2/nsfw-gen",//9
-  "provider-4/stable-diffusion-3.1-xl",//10
 ];
 
 cloudinary.config({
@@ -51,7 +49,7 @@ router.post("/generate", auth, async (req, res) => {
     console.log("Prompt:", prompt);
 
     // Select a model
-    const selectedModel = model || FLUX_MODELS[10];
+    const selectedModel = model || FLUX_MODELS[1];
 
     console.log("Selected model:", selectedModel);
 
