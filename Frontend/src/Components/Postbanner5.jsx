@@ -20,70 +20,16 @@ import p25 from '../assets/p25.jpeg'
 import p26 from '../assets/p26.jpeg'
 
 function postbanner5() {
+    const images = [p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p17, p19, p20, p21, p22, p23, p24, p25, p26];
     return (
-        <div className="bg-black text-white py-7 px-9 mt-22">
-            <div>
-                <h1><h1 className='text-cyan-500 mt-2'>Explore ◊</h1></h1>
-            </div>
-            <div className="flex flex-row gap-6 overflow-clip overflow-x-auto animate-scroll mt-12 ml-auto mr-0" style={{scrollbarWidth: "none"}}>
-                <div>
-                    <LongCard image={p9} />
-                </div>
-                <div>
-                    <LongCard image={p10} />
-                </div>
-                <div >
-                    <LongCard image={p11} />
-                </div>
-                
-                <div >
-                    <LongCard image={p12} />
-                </div>
-                <div >
-                    <LongCard image={p13} />
-                </div>
-                <div>
-                    <LongCard image={p14} />
-                </div>
-                <div>
-                    <LongCard image={p15} />
-                </div>
-                <div>
-                    <LongCard image={p16} />
-                </div>
-                <div>
-                    <LongCard image={p17} />
-                </div>
-                <div>
-                    <LongCard image={p18} />
-                </div>
-                <div>
-                    <LongCard image={p17} />
-                </div>
-                <div>
-                    <LongCard image={p19} />
-                </div>
-                <div>
-                    <LongCard image={p20} />
-                </div>
-                <div>
-                    <LongCard image={p21} />
-                </div>
-                <div>
-                    <LongCard image={p22} />
-                </div>
-                <div>
-                    <LongCard image={p23} />
-                </div>
-                <div>
-                    <LongCard image={p24} />
-                </div>
-                <div>
-                    <LongCard image={p25} />
-                </div>
-                <div>
-                    <LongCard image={p26} />
-                </div>
+        <div className="relative overflow-hidden mt-12">
+            <div className="flex flex-row gap-6 animate-scroll">
+                {/* Render images twice for seamless loop */}
+                {[...images, ...images].map((img, i) => (
+                    <div key={i} className="shrink-0">
+                        <LongCard image={img} />
+                    </div>
+                ))}
             </div>
         </div>
     )
