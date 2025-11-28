@@ -24,7 +24,6 @@ function postbanner5() {
     return (
         <div className="relative overflow-hidden mt-12">
             <div className="flex flex-row gap-6 animate-scroll">
-                {/* Render images twice for seamless loop */}
                 {[...images, ...images].map((img, i) => (
                     <div key={i} className="shrink-0">
                         <LongCard image={img} />
