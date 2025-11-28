@@ -22,7 +22,7 @@ const FLUX_MODELS = [
   "provider-4/qwen-image",//7
   "provider-4/phoenix",//8
   "provider-2/nsfw-gen",//9
-  "provider-3/stable-diffusion-3.1-xl",//10
+  "provider-4/stable-diffusion-3.1-xl",//10
 ];
 
 cloudinary.config({
