@@ -363,7 +363,7 @@ function Gnrt() {
                         />
 
                         <div className="w-full flex justify-between mt-3">
-                          <div className="text-sm text-gray-300">{selected.prompt}</div>
+                          <div className="text-sm text-gray-300 truncate-w20">{selected.prompt}</div>
                           <div className="flex gap-2">
                             <button
                               onClick={() => handleCopyPrompt(selected.prompt)}
