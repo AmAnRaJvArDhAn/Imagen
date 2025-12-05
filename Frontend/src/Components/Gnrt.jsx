@@ -323,8 +323,8 @@ function Gnrt() {
                     type="submit"
                     disabled={loading}
                     className={`px-4 py-2 rounded-md font-semibold ${loading
-                        ? "bg-gray-600"
-                        : "bg-linear-to-r from-cyan-600 to-purple-600 shadow-lg hover:brightness-125"
+                      ? "bg-gray-600"
+                      : "bg-linear-to-r from-cyan-600 to-purple-600 shadow-lg hover:brightness-125"
                       }`}
                   >
                     {loading ? "Generating..." : "Generate"}
@@ -400,8 +400,8 @@ function Gnrt() {
                             key={img.id}
                             onClick={() => setSelected(img)}
                             className={`rounded overflow-hidden border ${selected?.id === img.id
-                                ? "ring-2 ring-purple-500"
-                                : "border-gray-700"
+                              ? "ring-2 ring-purple-500"
+                              : "border-gray-700"
                               }`}
                           >
                             <img

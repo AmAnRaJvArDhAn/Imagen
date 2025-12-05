@@ -48,8 +48,8 @@ router.post("/generate", auth, async (req, res) => {
     console.log("Image generation request received");
     console.log("Prompt:", prompt);
 
-    // Select a model
-    const selectedModel = model || FLUX_MODELS[4];
+    // Selecting a model
+    const selectedModel = model || FLUX_MODELS[4];   
 
     console.log("Selected model:", selectedModel);
 
@@ -112,7 +112,7 @@ router.post("/generate", auth, async (req, res) => {
 
     if (!temporaryImageUrl) {
       return res.status(500).json({
-        error: "NSFW prompts are not allowed",
+        error: "NSFW prompts are not allowed, Bhaisaab! sharm kariye thoda.",
         responseData: data,
       });
     }
@@ -147,7 +147,7 @@ router.post("/generate", auth, async (req, res) => {
       });
 
     } catch (uploadError) {
-      console.error("❌ Cloudinary upload error:", uploadError);
+      console.error("Cloudinary upload error:", uploadError);
       
       return res.json({
         success: true,
@@ -160,7 +160,7 @@ router.post("/generate", auth, async (req, res) => {
     }
 
   } catch (err) {
-    console.error("❌ Server Error:", err);
+    console.error("Server Error:", err);
     res.status(500).json({
       error: "Internal server error",
       message: err.message,
@@ -181,7 +181,7 @@ router.get("/gallery", auth, async (req, res) => {
     });
     
   } catch (error) {
-    console.error("❌ Gallery fetch error:", error);
+    console.error("Gallery fetch error:", error);
     res.status(500).json({ 
       error: "Failed to fetch gallery",
       message: error.message 
@@ -202,7 +202,7 @@ router.get("/gallery/favorites", auth, async (req, res) => {
       count: favorites.length 
     });
   } catch (error) {
-    console.error("❌ Favorites fetch error:", error);
+    console.error("Favorites fetch error:", error);
     res.status(500).json({ error: "Failed to fetch favorites" });
   }
 });
@@ -219,7 +219,7 @@ router.get("/gallery/recent", auth, async (req, res) => {
       count: recent.length 
     });
   } catch (error) {
-    console.error("❌ Recent fetch error:", error);
+    console.error("Recent fetch error:", error);
     res.status(500).json({ error: "Failed to fetch recent images" });
   }
 });
@@ -244,7 +244,7 @@ router.patch("/gallery/:imageId/favorite", auth, async (req, res) => {
       message: `Image ${image.isFavorite ? 'added to' : 'removed from'} favorites`
     });
   } catch (error) {
-    console.error("❌ Favorite toggle error:", error);
+    console.error("Favorite toggle error:", error);
     res.status(500).json({ error: "Failed to update favorite" });
   }
 });
@@ -264,7 +264,7 @@ router.delete("/gallery/:imageId", auth, async (req, res) => {
       try {
         const publicId = image.imageUrl.split('/').slice(-2).join('/').split('.')[0];
         await cloudinary.uploader.destroy(publicId);
-        console.log("✅ Deleted from Cloudinary");
+        console.log("Deleted from Cloudinary");
       } catch (cloudinaryError) {
         console.error("Failed to delete from Cloudinary:", cloudinaryError);
       }
@@ -277,7 +277,7 @@ router.delete("/gallery/:imageId", auth, async (req, res) => {
       message: "Image deleted successfully" 
     });
   } catch (error) {
-    console.error("❌ Delete error:", error);
+    console.error("Delete error:", error);
     res.status(500).json({ error: "Failed to delete image" });
   }
 });
