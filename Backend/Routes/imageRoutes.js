@@ -49,7 +49,7 @@ router.post("/generate", auth, async (req, res) => {
     console.log("Prompt:", prompt);
 
     // Selecting a model
-    const selectedModel = model || FLUX_MODELS[4] || FLUX_MODELS[3] || FLUX_MODELS[5];   
+    const selectedModel = model || FLUX_MODELS[4];   
 
     console.log("Selected model:", selectedModel);
 
