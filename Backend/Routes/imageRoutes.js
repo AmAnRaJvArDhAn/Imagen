@@ -49,7 +49,7 @@ router.post("/generate", auth, async (req, res) => {
     console.log("Prompt:", prompt);
 
     // Selecting a model
-    const selectedModel = model || FLUX_MODELS[4];   
+    const selectedModel = model || FLUX_MODELS[4] || FLUX_MODELS[3] || FLUX_MODELS[5];   
 
     console.log("Selected model:", selectedModel);
 
@@ -80,7 +80,7 @@ router.post("/generate", auth, async (req, res) => {
       }
 
       return res.status(response.status).json({
-        error: "Image generation failed",
+        error: "Server timed out or encountered an error, try again later.",
         details: errorData,
         model: selectedModel,
       });
